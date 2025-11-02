@@ -5,14 +5,14 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
-public class AJDrive {
+public class Drivetrain {
 
     DcMotor LF_motor, RF_motor;
     DcMotor LB_motor, RB_motor;
 
 
 
-    public AJDrive(HardwareMap initMotors) {
+    public Drivetrain(HardwareMap initMotors) {
         LF_motor = initMotors.get(DcMotor.class, "LF");
         RF_motor = initMotors.get(DcMotor.class, "RF");
         LB_motor = initMotors.get(DcMotor.class, "LB");
