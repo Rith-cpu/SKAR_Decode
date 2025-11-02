@@ -2,8 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 
 @TeleOp(name = "field relative")
+@Disabled
 public class FieldRelativeOpMode extends OpMode {
 
     FieldRelativeDrive frdrive = new FieldRelativeDrive(); // gets information from FieldRelativeDrive
