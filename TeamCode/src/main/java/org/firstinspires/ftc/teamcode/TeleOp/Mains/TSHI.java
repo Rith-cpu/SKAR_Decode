@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class TSHI {
     DcMotor Lshooter, Rshooter, turretMotor, intake;
-    Servo lsservo;
+    Servo lsservo, transfer;
 
    public TSHI(HardwareMap Init) {
        turretMotor = Init.get(DcMotor.class, "trrt");
@@ -15,14 +15,16 @@ public class TSHI {
        Rshooter = Init.get(DcMotor.class, "RS");
        intake = Init.get(DcMotor.class, "intake");
        lsservo = Init.get(Servo.class, "lshood");
+       transfer = Init.get(Servo.class,"trans");
 
        lsservo.setPosition(0);
+       transfer.setPosition(0);
        turretMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
        turretMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
    }
 
-   public void LSandIntakeServoActions(Gamepad gamepad) {
+   public void LSActions(Gamepad gamepad) {
        if (gamepad.y) {
            lsservo.setPosition(0.89);
        }
@@ -32,10 +34,16 @@ public class TSHI {
        if (gamepad.b) {
            lsservo.setPosition(0.5);
        }
+   }
+   public void IntakeandTransfer(Gamepad gamepad) {
        if (gamepad.x) {
            intake.setPower(-1);
        }
+       if (gamepad.right_stick_button) {
+           transfer.setPosition(1.0);
+       }
        intake.setPower(0);
+       transfer.setPosition(0);
    }
    public void TurretandShooterActions(Gamepad gamepad) {
        Lshooter.setPower(gamepad.right_stick_y);
@@ -48,6 +56,6 @@ public class TSHI {
        } else {
            turretMotor.setPower(0);
        }
+
    }
 }
-
