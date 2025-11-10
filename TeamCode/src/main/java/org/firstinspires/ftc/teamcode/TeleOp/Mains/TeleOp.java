@@ -17,17 +17,20 @@ public class TeleOP extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
+            
 
-            turretShooterHoodIntake.Lshooter.setPower(0.3);
-            turretShooterHoodIntake.Rshooter.setPower(-0.3);
+            //turretShooterHoodIntake.Lshooter.setPower(-0.3);
+            //turretShooterHoodIntake.Rshooter.setPower(0.3);
             telemetry.addData("Shooter Speed", -gamepad2.right_stick_y + "%");
             telemetry.addData("LS Position", turretShooterHoodIntake.lsservo.getPosition());
             telemetry.addData("Turret Position", turretShooterHoodIntake.turretMotor.getCurrentPosition());
-
+            telemetry.update();
             driveTrainControl.Driving(gamepad1);
             turretShooterHoodIntake.LSActions(gamepad2);
-            turretShooterHoodIntake.TurretandShooterActions(gamepad2);
+            turretShooterHoodIntake.ShooterActions(gamepad2);
             turretShooterHoodIntake.IntakeandTransfer(gamepad2);
+            turretShooterHoodIntake.TurretJoystickControl(gamepad2);
+
             //sparkFunControl.OTOS(gamepad1,telemetry);
 
         }
