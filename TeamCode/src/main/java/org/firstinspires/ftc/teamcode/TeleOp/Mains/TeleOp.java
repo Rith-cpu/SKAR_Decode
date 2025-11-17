@@ -17,7 +17,7 @@ public class TeleOP extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            
+
 
             //turretShooterHoodIntake.Lshooter.setPower(-0.3);
             //turretShooterHoodIntake.Rshooter.setPower(0.3);
