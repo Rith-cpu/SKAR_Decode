@@ -62,16 +62,17 @@ public class TSHI {
            transfer.setPosition(0.5);
        }*/
 
-       /*if (gamepad.x){
+       if (gamepad.x){
            intake.setPower(-1);
-       }*/
-       double intakePower = intake.getPower();
+       }
+       intake.setPower(0);
 
-       if ((intakePower >= -1.0 && intakePower <= -0.5) && gamepad.x) {
+       double intakePower = intake.getPower();
+       /*if ((intakePower >= -1.0 && intakePower <= -0.5) && gamepad.x) {
            intake.setPower(0.0);
        } else if ((intakePower > -0.5 && intakePower <= 0.0) && gamepad.x) {
            intake.setPower(-1.0);
-       }
+       }*/
 
 
    }
