@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class TSHI {
     DcMotor Lshooter, Rshooter, turretMotor, intake;
-    Servo lsservo, transfer;
+    Servo lsservo, transfer, stopper;
 
     // Boot/transfer kicker variables
     private boolean isKicking = false;
@@ -27,9 +27,11 @@ public class TSHI {
        intake = Init.get(DcMotor.class, "intake");
        lsservo = Init.get(Servo.class, "lshood");
        transfer = Init.get(Servo.class,"trans");
+       stopper = Init.get(Servo.class, "stop");
 
        lsservo.setPosition(0);
        transfer.setPosition(0.5);
+       stopper.setPosition(0.5);
        turretMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
        turretMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
@@ -52,10 +54,12 @@ public class TSHI {
    }
    public void IntakeandTransfer(Gamepad gamepad) {
        if (gamepad.dpad_up) {
-           transfer.setPosition(0.0);
+           transfer.setPosition(0.2);
+           stopper.setPosition(1.0);
        }
        if (gamepad.dpad_down){
            transfer.setPosition(0.5);
+           stopper.setPosition(0.5);
        }
 
        /*if (gamepad.dpad_left) {
