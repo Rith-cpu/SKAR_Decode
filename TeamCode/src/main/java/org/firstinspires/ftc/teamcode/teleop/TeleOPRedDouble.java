@@ -1,0 +1,114 @@
+package org.firstinspires.ftc.teamcode.teleop;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.prism.GoBildaPrismDriver;
+//import org.firstinspires.ftc.teamcode.auto.Trig;
+
+
+@TeleOp(name = "TeleOP -  Red - 2P" )
+public class TeleOPRedDouble extends LinearOpMode {
+    @Override
+    public void runOpMode() throws InterruptedException {
+        MecanumDrive drive = new MecanumDrive(hardwareMap,new Pose2d(0, 0, 0));
+        TSHI tshi = new TSHI(hardwareMap);
+        Drivetrain driveTrainControl = new Drivetrain(hardwareMap);
+        TurretTesting tt = new TurretTesting(hardwareMap);
+        LimelightDistance distance = new LimelightDistance(hardwareMap);
+        tshi.prism.loadAnimationsFromArtboard(GoBildaPrismDriver.Artboard.ARTBOARD_0);
+
+        //Trig trig = new Trig(hardwareMap, drive);
+
+
+        tt.setPipeline(0);
+        tt.getLimelightStatus();
+        // Optional: tune these later; start with defaults in TurretTesting
+        // tt.setGains(0.04, 1.0, 0.7);
+
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        waitForStart();
+        while (opModeIsActive()) {
+
+            tt.updateLL();   // poll Limelight so telemetry stays live
+            tt.runLL();      // always auto-align the turret
+            // If auto-aim is not running this loop, the last Limelight values may be stale.
+
+            //trig.autoAlignTurret();
+            //use for testing odometry
+            // This keeps telemetry truthful.
+            telemetry.addData("LL status", tt.getLimelightStatus());
+            telemetry.addData("LL valid", tt.hasValidTarget());
+            //telemetry.addData("x", trig.getCurrPosX());
+            //telemetry.addData("y", trig.getCurrPosY() );
+            //telemetry.addData("heading", trig.turretAngle());
+            //telemetry.addData("Distance based off odometry", trig.distance());
+
+
+            Double llDistance = distance.getDistanceIfValid();
+
+
+
+            if (llDistance != null) {
+                tshi.LSActions(distance);
+                telemetry.addData("LL Distance", llDistance);
+                if (llDistance < 50){
+                    telemetry.addData("LowLow speed", distance.getLowLowPowerIfValid(llDistance));
+
+                }
+
+                if (llDistance < 100 && llDistance >50 ){
+                    telemetry.addData("Low speed", distance.getLowPowerIfValid(llDistance));
+                }
+                if (llDistance > 100){
+                    telemetry.addData("High Speed", distance.getHighPowerIfValid(llDistance));
+                }
+
+                //  turretShooterHoodIntake.
+
+            } else {
+                telemetry.addData("LL Distance", "N/A");
+            }
+
+            if (llDistance == null) {
+                tshi.turretMotor.setTargetPosition(0);
+                tshi.turretMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                tshi.turretMotor.setPower(0.7);
+
+            }
+
+            telemetry.addData("Shooter Speed (Motor)", tshi.Lshooter.getVelocity());
+            telemetry.addData("LS Position", tshi.lsservo.getPosition());
+            telemetry.addData("Turret Position", tshi.turretMotor.getCurrentPosition());
+            /*telemetry.addLine("----------------------------------");
+            telemetry.addLine("Flywheel Tuning Values");
+            telemetry.addData("Target Velocity", tshi.accVelocity);
+            telemetry.addData("Curent velocity",  tshi.Lshooter.getVelocity());
+            telemetry.addData("Hood Posisiton",  tshi.hoodPos);
+            telemetry.addLine("---------------------------------------");
+            telemetry.addData("Step Size Velocity",  tshi.stepSizesVel[tshi.stepIndex]);
+            telemetry.addData("Step Size Hood", tshi.stepSizesHood[tshi.stepIndex]);*/
+            telemetry.update();
+
+            driveTrainControl.Driving(gamepad1);
+            tshi.ShooterActions(gamepad2,0.279,distance);
+            tshi.Intake(gamepad2);
+            //tshi.backup(gamepad1,0.279);
+            //tshi.FlywheelTuning(gamepad1);
+
+
+            //Tempprary manual control
+            //turretShooterHoodIntake.TurretJoystickControl(gamepad2);
+            //tt.runLL();
+
+
+
+        }
+    }
+}
