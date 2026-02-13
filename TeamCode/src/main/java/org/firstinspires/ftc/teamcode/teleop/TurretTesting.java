@@ -26,7 +26,7 @@ public class TurretTesting {
     private double closeGainK = 0.45;      // scale P gain by 1/(1 + closeGainK*ta)
     private double minPowerCloseScale = 0.6; // reduce minPower when close (0..1)
 
-    private double kP = 0.045;         // proportional gain (deg -> power)
+    private double kP = 0.047;         // proportional gain (deg -> power)
     private double kD = 0.0015;        // derivative gain (power per (deg/s))
     private double lastErrDeg = 0.0;  // for derivative
     private double deadbandDeg = 0.9; // stop when |tx| < deadband

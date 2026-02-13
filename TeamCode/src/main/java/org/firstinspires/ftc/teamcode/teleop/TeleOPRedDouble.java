@@ -35,11 +35,12 @@ public class TeleOPRedDouble extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
+            Double llDistance = distance.getDistanceIfValid();
 
             tt.updateLL();   // poll Limelight so telemetry stays live
             tt.runLL();      // always auto-align the turret
             // If auto-aim is not running this loop, the last Limelight values may be stale.
-
+            distance.getDistance(llDistance);
             //trig.autoAlignTurret();
             //use for testing odometry
             // This keeps telemetry truthful.
@@ -51,11 +52,14 @@ public class TeleOPRedDouble extends LinearOpMode {
             //telemetry.addData("Distance based off odometry", trig.distance());
 
 
-            Double llDistance = distance.getDistanceIfValid();
 
 
-
-            if (llDistance != null) {
+            if("INVALID".equalsIgnoreCase(tt.getLimelightStatus())){
+                telemetry.addData("Testing invalid status", tshi.Lshooter.getVelocity());
+                telemetry.update();
+                tshi.LSActionsNotValidMode(100.00);
+                tshi.ShooterActionsNotValidMode(gamepad1);
+            }else{
                 tshi.LSActions(distance);
                 telemetry.addData("LL Distance", llDistance);
                 if (llDistance < 50){
@@ -70,10 +74,6 @@ public class TeleOPRedDouble extends LinearOpMode {
                     telemetry.addData("High Speed", distance.getHighPowerIfValid(llDistance));
                 }
 
-                //  turretShooterHoodIntake.
-
-            } else {
-                telemetry.addData("LL Distance", "N/A");
             }
 
             if (llDistance == null) {
@@ -94,19 +94,27 @@ public class TeleOPRedDouble extends LinearOpMode {
             telemetry.addLine("---------------------------------------");
             telemetry.addData("Step Size Velocity",  tshi.stepSizesVel[tshi.stepIndex]);
             telemetry.addData("Step Size Hood", tshi.stepSizesHood[tshi.stepIndex]);*/
+            telemetry.addLine("----------------------------------");
+            telemetry.addLine("Custom Flywheel Values");
+            telemetry.addData("Current Selected Equation",  distance.equation[Math.abs(distance.stepIndex)]);
+            telemetry.addData("Delta y-int Less than 50:", distance.b-973.16097);
+            telemetry.addData("Delta y-int Less than 100 & Greater than 50:", distance.b50-968.67251);
+            telemetry.addData("Delta y-int Greater than 100:", distance.b100-1061.85831);
             telemetry.update();
+
+
 
             driveTrainControl.Driving(gamepad1);
             tshi.ShooterActions(gamepad2,0.279,distance);
             tshi.Intake(gamepad2);
             //tshi.backup(gamepad1,0.279);
             //tshi.FlywheelTuning(gamepad1);
+            distance.customFlyweelVel(gamepad1);
 
 
             //Tempprary manual control
             //turretShooterHoodIntake.TurretJoystickControl(gamepad2);
             //tt.runLL();
-
 
 
         }

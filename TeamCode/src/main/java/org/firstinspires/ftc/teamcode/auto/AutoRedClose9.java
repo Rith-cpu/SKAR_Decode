@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.auto;
 
+import com.acmerobotics.roadrunner.MinVelConstraint;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -13,10 +13,9 @@ import org.firstinspires.ftc.teamcode.teleop.LimelightDistance;
 import org.firstinspires.ftc.teamcode.teleop.TSHI;
 import org.firstinspires.ftc.teamcode.teleop.TurretTesting;
 import org.firstinspires.ftc.teamcode.tuning.TuningOpModes;
-import org.opencv.video.TrackerNano_Params;
 
-@Autonomous(name = "AutoRedClose", group = "Red")
-public class AutoCloseRed9 extends LinearOpMode {
+@Autonomous(name = "AutoRedClose9", group = "Red")
+public class AutoRedClose9 extends LinearOpMode {
 
 
     @Override
@@ -30,7 +29,7 @@ public class AutoCloseRed9 extends LinearOpMode {
             MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(50, 55, Math.toRadians(45)));
 
             tshi.AutoLS(0.1);
-            tshi.AutoTurret(-51);
+            tshi.AutoTurret(-275);
 
             tt.setPipeline(0);
             tt.getLimelightStatus();
@@ -52,34 +51,28 @@ public class AutoCloseRed9 extends LinearOpMode {
 
     }
 
-
-
-
     private void shootPreloads(MecanumDrive drive, TSHI tshi, TurretTesting tt, LimelightDistance ld) {
         Pose2d pos = new Pose2d(50, 55, Math.toRadians(45));
         int count = 1;
         Double distance = ld.getDistanceIfValid();
         //tt.updateLL();   // poll Limelight so telemetry stays live
         // tt.runLL();      // always auto-align the turret
-        tshi.AutoShooter("start", 1180);
+        tshi.AutoShooter("start", 1200);
 
-        while (count == 1) {
-            Actions.runBlocking(
-                    drive.actionBuilder(pos)
-                            .strafeTo(new Vector2d(28, 33),new TranslationalVelConstraint(100))
-                            .build());
-            count++;
-        }
-        while (count == 1 || count == 2) {
-            tshi.AutoIntakeandShoot("shoot", 1);
-            count++;}
-        sleep(2200);
+        Actions.runBlocking(
+                drive.actionBuilder(pos)
+                        .strafeToSplineHeading(new Vector2d(18, 20),Math.toRadians(10), new TranslationalVelConstraint(100))
+                        .build());
+
+
+        tshi.AutoIntakeandShoot("shoot", 1);
+        sleep(1800);
         tshi.AutoShooter("stop", 0);
 
     }
 
     private void intakeBalls1(MecanumDrive drive, TSHI tshi, TurretTesting tt, LimelightDistance ld) {
-        Pose2d pos = new Pose2d(28, 33, Math.toRadians(45));
+        Pose2d pos = new Pose2d(18, 20, Math.toRadians(10));
 
 
         tshi.AutoIntakeandShoot("intake", 1.0);
@@ -87,8 +80,7 @@ public class AutoCloseRed9 extends LinearOpMode {
 
         Actions.runBlocking(
                 drive.actionBuilder(pos)
-                        .strafeToLinearHeading(new Vector2d(23, 15), Math.toRadians(10))
-                        .strafeTo(new Vector2d(53, 15), new TranslationalVelConstraint(90))
+                        .strafeTo(new Vector2d(50, 20), new TranslationalVelConstraint(90))
 
                         .build());
 
@@ -98,40 +90,37 @@ public class AutoCloseRed9 extends LinearOpMode {
     }
 
     private void shootSecondLoad(MecanumDrive drive, TSHI tshi, TurretTesting tt, LimelightDistance ld) {
-        Pose2d pos = new Pose2d(53, 15, Math.toRadians(10));
+        Pose2d pos = new Pose2d(45, 20, Math.toRadians(10));
         int count = 1;
         Double distance = ld.getDistanceIfValid();
         //tt.updateLL();   // poll Limelight so telemetry stays live
         // tt.runLL();      // always auto-align the turret
+        tshi.AutoTurret(-320);
         tshi.AutoShooter("start", 1200);
 
-        tshi.AutoTurret(-300);
 
-        while (count == 1) {
             Actions.runBlocking(
                     drive.actionBuilder(pos)
-                            .strafeTo(new Vector2d(20, 15))
+                            .strafeTo(new Vector2d(29, 20))
                             .build());
-            count++;
-        }
-        while (count == 1 || count == 2) {
+
             tshi.AutoIntakeandShoot("shoot", 1);
             count++;
-        }
-        sleep(2200);
+
+        sleep(1600);
         tshi.AutoShooter("stop", 0);
 
     }
     private void IntakeSecondRow(MecanumDrive drive, TSHI tshi, TurretTesting tt, LimelightDistance ld) {
-        Pose2d pos = new Pose2d(20, 15, Math.toRadians(10));
+        Pose2d pos = new Pose2d(29, 15, Math.toRadians(10));
 
         tshi.AutoIntakeandShoot("intake", 1.0);
 
 
         Actions.runBlocking(
                 drive.actionBuilder(pos)
-                        .strafeToLinearHeading(new Vector2d(20, -10), Math.toRadians(10))
-                        .strafeToLinearHeading(new Vector2d(66, -6), Math.toRadians(10),new TranslationalVelConstraint(50))
+                        .strafeToLinearHeading(new Vector2d(25, -5), Math.toRadians(10))
+                        .strafeToLinearHeading(new Vector2d(57, -3), Math.toRadians(10),new TranslationalVelConstraint(30))
                         .build());
 
 
@@ -139,13 +128,13 @@ public class AutoCloseRed9 extends LinearOpMode {
     }
 
     private void ShootThirdLoad(MecanumDrive drive, TSHI tshi, TurretTesting tt, LimelightDistance ld) {
-        Pose2d pos = new Pose2d(66, -6, Math.toRadians(10));
+        Pose2d pos = new Pose2d(57, -1, Math.toRadians(10));
         int count = 1;
         Double distance = ld.getDistanceIfValid();
 
-        tshi.AutoShooter("start", 1250);
+        tshi.AutoShooter("start", 1270);
 
-        tshi.AutoTurret(-300);
+        tshi.AutoTurret(-290);
 
         while (count == 1) {
             Actions.runBlocking(
@@ -157,7 +146,7 @@ public class AutoCloseRed9 extends LinearOpMode {
         while (count == 1 || count == 2) {
             tshi.AutoIntakeandShoot("shoot", 1);
             count++;}
-        sleep(2200);
+        sleep(1700);
         tshi.AutoShooter("stop", 0);
         sleep(500);
         tshi.AutoTurret(0);

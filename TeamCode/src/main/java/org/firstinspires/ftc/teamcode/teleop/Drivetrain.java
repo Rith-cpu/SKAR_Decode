@@ -18,7 +18,7 @@ public class Drivetrain {
         RF_motor = initMotors.get(DcMotor.class, "RF");
         LB_motor = initMotors.get(DcMotor.class, "LB");
         RB_motor = initMotors.get(DcMotor.class, "RB");
-        RF_motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        //RF_motor.setDirection(DcMotorSimple.Direction.REVERSE);
        //  RB_motor.setDirection(DcMotorSimple.Direction.REVERSE);
         LF_motor.setDirection(DcMotorSimple.Direction.REVERSE);
         LB_motor.setDirection(DcMotorSimple.Direction.REVERSE);

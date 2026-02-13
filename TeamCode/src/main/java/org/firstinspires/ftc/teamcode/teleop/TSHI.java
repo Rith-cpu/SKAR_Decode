@@ -172,22 +172,9 @@ public class TSHI {
             light.setPosition(color);
         }
 
-
-
-
-       /*Lshooter.setPower(gamepad.right_trigger);
-       Rshooter.setPower(-gamepad.right_trigger);*/
-        /*if (gamepad.right_trigger > 0) {
-            Lshooter.setPower(speed);
-            Rshooter.setPower(-speed);
-
-        }
-        if (gamepad.right_trigger == 0){
-            Lshooter.setPower(0);
-            Rshooter.setPower(0);
-
-        }*/
     }
+
+
 
     public void TurretJoystickControl(Gamepad gamepad) {
         double lx = gamepad.left_stick_x;
@@ -404,5 +391,6 @@ public class TSHI {
         }
 
     }
+
 
 }
